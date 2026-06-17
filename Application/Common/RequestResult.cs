@@ -1,3 +1,5 @@
+using MediatR;
+
 namespace Application.Common;
 
 public class RequestResult<TResult>

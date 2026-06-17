@@ -8,8 +8,8 @@ namespace Infrastructure.Data;
 public class Context(DbContextOptions<Context> options) : DbContext(options), IContext
 {
     public DbSet<Course> Courses { get; set; }
-    public DbSet<Course> Learner{ get; set; }
-    public DbSet<Course> Enrollment { get; set; }
+    public DbSet<Learner> Learners { get; set; }
+    public DbSet<Enrollment> Enrollments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

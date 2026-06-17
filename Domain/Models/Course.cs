@@ -7,4 +7,6 @@ public class Course : BaseEntity
     public short DurationHours { get; set; }
     public bool RequiresApproval { get; set; }
     public bool IsActive { get; set; }
+    
+    public virtual ICollection<Enrollment> Enrollments { get; set; }
 }
