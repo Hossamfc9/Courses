@@ -2,6 +2,7 @@ using Application.Features.Learners.Commands.AddLearner;
 using Application.Features.Learners.Queries.GetLearnerById;
 using Application.Features.Learners.Queries.GetLearners;
 using Courses.Requests.Learner;
+using Infrastructure.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace Courses.Controllers;
 public class LearnersController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
+    [Role("Learner")]
     public async Task<IActionResult> AddLearner([FromBody] AddLearnerRequest request)
     {
         return Ok(await mediator.Send(new AddLearnerCommand(request.FullName, request.Email, request.NationalId,

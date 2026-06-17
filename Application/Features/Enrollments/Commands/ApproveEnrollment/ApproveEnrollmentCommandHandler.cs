@@ -11,7 +11,7 @@ namespace Application.Features.Enrollments.Commands.ApproveEnrollment;
 
 public class ApproveEnrollmentCommandHandler(
     IContext _context,
-    ILogger<ApproveEnrollmentCommandHandler> _logger) // 1. Injected ILogger
+    ILogger<ApproveEnrollmentCommandHandler> _logger)
     : IRequestHandler<ApproveEnrollmentCommand, RequestResult<ApproveEnrollmentDto>>
 {
     public async Task<RequestResult<ApproveEnrollmentDto>> Handle(ApproveEnrollmentCommand request, CancellationToken cancellationToken)
@@ -32,17 +32,15 @@ public class ApproveEnrollmentCommandHandler(
             throw new InvalidDataException(request.EnrollmentId, "Enrollment");
         }
 
-        // 2. Capture the old status before mutating the entity
         var oldStatus = enrollment.Status.ToString();
         
         enrollment.Status = request.Decision == "Approved" 
             ? EnrollmentStatus.Approved 
             : EnrollmentStatus.Rejected;
             
-        enrollment.CreatedAt = DateTime.UtcNow; // (Consider renaming this to DecisionDate in your model!)
+        enrollment.CreatedAt = DateTime.UtcNow;
         enrollment.DecisionReason = request.Decision; 
 
-        // 3. Create the Audit Record using LearnerId
         var audit = new EnrollmentDecision()
         {
             Id = Guid.NewGuid(),
@@ -51,7 +49,7 @@ public class ApproveEnrollmentCommandHandler(
             Action = "Decision Made",
             OldValue = oldStatus,
             NewValue = enrollment.Status.ToString(),
-            PerformedBy = enrollment.LearnerId.ToString(), // <-- Using LearnerId as requested
+            PerformedBy = enrollment.LearnerId.ToString(), 
             CreatedAt = DateTime.UtcNow
         };
 
@@ -59,7 +57,6 @@ public class ApproveEnrollmentCommandHandler(
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        // 4. Structured Logging for Serilog/Console
         _logger.LogInformation(
             "Audit: {EntityName} {EntityId} was updated. Action: {Action}. Status changed from {OldValue} to {NewValue} by Learner {PerformedBy}. Reason: {Reason}",
             nameof(Enrollment), 

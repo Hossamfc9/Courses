@@ -13,12 +13,14 @@ namespace Courses.Controllers;
 public class EnrollmentsController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
+    [Role("Learner")]
     public async Task<IActionResult> CreateEnrollment([FromBody] CreateEnrollmentRequest request)
     {
         return Ok(await mediator.Send(new CreateEnrollmentCommand(request.LearnerId, request.CourseId)));
     }
 
     [HttpPost("{EnrollmentId}/{Decision}")]
+    [Role("Admin")]
     public async Task<IActionResult> ApproveEnrollment([FromRoute] ApproveEnrollmentRequest request, [FromBody] string Reason)
     {
         return Ok(await mediator.Send(new ApproveEnrollmentCommand(request.EnrollmentId, request.Decision, Reason)));
