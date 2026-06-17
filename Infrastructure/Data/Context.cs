@@ -10,6 +10,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options), IC
     public DbSet<Course> Courses { get; set; }
     public DbSet<Learner> Learners { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
+    public DbSet<EnrollmentDecision> EnrollmentDecisions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

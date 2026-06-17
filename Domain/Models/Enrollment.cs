@@ -7,6 +7,7 @@ namespace Domain.Models;
 public class Enrollment : BaseEntity
 {
     public EnrollmentStatus Status { get; set; }
+    public string? DecisionReason { get; set; }
     [ForeignKey("Learner")]
     public Guid LearnerId { get; set; }
     [ForeignKey("Course")]
