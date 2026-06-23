@@ -16,5 +16,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options), IC
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CourseConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EnrollmentConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LearnerConfiguration).Assembly);
     }
 }
